@@ -1,13 +1,13 @@
 provider "aws" {
-  region = var.aws_region
+  region = "eu-north-1"  # Replace with your desired AWS region
 }
 
 resource "aws_security_group" "web_sg" {
-  name        = "web-security-group"
+  name        = "web-security-group-${random_string.suffix.result}"
   description = "Allow HTTP inbound"
+  vpc_id      = "vpc-029ced3d52306d8d9"  # Replace with your VPC ID
 
   ingress {
-    description = "Allow HTTP"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -15,7 +15,6 @@ resource "aws_security_group" "web_sg" {
   }
 
   egress {
-    description = "Allow all outbound"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -23,15 +22,8 @@ resource "aws_security_group" "web_sg" {
   }
 }
 
-resource "aws_instance" "web" {
-  ami                         = var.ami_id
-  instance_type               = var.instance_type
-  associate_public_ip_address = true
-  key_name                    = var.key_name
-
-  vpc_security_group_ids = [aws_security_group.web_sg.id]
-
-  tags = {
-    Name = "Flask-Docker-Host"
-  }
+resource "random_string" "suffix" {
+  length  = 5
+  special = false
+  upper   = false
 }
