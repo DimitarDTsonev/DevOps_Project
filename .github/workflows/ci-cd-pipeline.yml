@@ -34,7 +34,7 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/DimitarDTsonev/DevOps_Project:latest
+          docker push ghcr.io/DimitarDTsonev/devops_project:latest
 
   terraform-deploy:
     name: Deploy Infrastructure with Terraform
