@@ -30,7 +30,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/DimitarDTsonev/devOos_project:latest .
+          docker build -t ghcr.io/DimitarDTsonev/devops_project:latest .
 
       - name: Push Docker image
         run: |
