@@ -30,11 +30,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/DimitarDTsonev/devops_project:latest .
+          docker build -t ghcr.io/dimitardtsonev/devops_project:latest .
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/DimitarDTsonev/devops_project:latest
+          docker push ghcr.io/dimitardtsonev/devops_project:latest
 
   terraform-deploy:
     name: Deploy Infrastructure with Terraform
