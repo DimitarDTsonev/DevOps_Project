@@ -32,5 +32,6 @@ Clone the repository to your local machine:
 ```bash
 git clone https://github.com/DimitarDTsonev/DevOps_Project.git
 cd ./DevOps_Project
+```
 
 [Deployed App on AWS](http://13.58.145.213)
