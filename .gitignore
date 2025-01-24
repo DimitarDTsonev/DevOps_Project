@@ -6,3 +6,5 @@ env/
 *.log
 .DS_Store
 .terraform/
+README.md
+LICENSE
