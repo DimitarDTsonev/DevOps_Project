@@ -29,10 +29,6 @@ resource "aws_security_group" "web_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-  tags = {
-    Name = "allow_web_traffic"
-  }
 }
 
 resource "aws_instance" "web_server" {
