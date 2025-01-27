@@ -1,14 +1,12 @@
 provider "aws" {
-  region = "eu-north-1"
+  region = "eu-central-1"
 }
 
-resource "aws_security_group" "web_sg" {
-  name        = "web-security-group-${random_string.suffix.result}"
-  description = "Allow HTTP inbound"
-  vpc_id      = "vpc-029ced3d52306d8d9"
+resource "aws_security_group" "fastapi_sg" {
+  name        = "fastapi_sg"
+  description = "Allow HTTP and SSH traffic"
 
   ingress {
-    description = "HTTP from VPC"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -16,7 +14,6 @@ resource "aws_security_group" "web_sg" {
   }
 
   ingress {
-    description = "SSH from anywhere"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -31,16 +28,15 @@ resource "aws_security_group" "web_sg" {
   }
 }
 
-resource "aws_instance" "web_server" {
+resource "aws_instance" "fastapi_app" {
   ami           = "ami-0d266d33ca564bca7"
   instance_type = "t2.micro"
+  key_name      = "Key_Pair"
+  vpc_security_group_ids = [aws_security_group.fastapi_sg.id]
 
-  security_groups = [aws_security_group.allow_http.name]
-  associate_public_ip_address = true
-
-  key_name = "Key_Pair"
-  
   tags = {
     Name = "CD/CI Pipeline"
   }
+
+  subnet_id = "vpc-029ced3d52306d8d9"
 }
