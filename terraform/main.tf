@@ -1,11 +1,11 @@
 provider "aws" {
-  region = "eu-north-1"  # Replace with your desired AWS region
+  region = "eu-north-1"
 }
 
 resource "aws_security_group" "web_sg" {
   name        = "web-security-group-${random_string.suffix.result}"
   description = "Allow HTTP inbound"
-  vpc_id      = "vpc-029ced3d52306d8d9"  # Replace with your VPC ID
+  vpc_id      = "vpc-029ced3d52306d8d9"
 
   ingress {
     from_port   = 80
