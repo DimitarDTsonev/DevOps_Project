@@ -1,15 +1,16 @@
-from flask import Flask
 import socket
+from fastapi import FastAPI
+import uvicorn
 
-app = Flask(__name__)
+app = FastAPI()
 
-@app.route("/")
+@app.get("/")
 def root():
     return "Hello World"
 
-@app.route("/hostname")
-def hostname():
-    return f"Hostname: {socket.gethostname()}"
+@app.get("/hostname")
+async def hostname():
+    return "Hostname: {socket.gethostname()}"
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80)
+    uvicorn.run(app, host="0.0.0.0", port=80)
