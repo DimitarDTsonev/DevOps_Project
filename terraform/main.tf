@@ -1,12 +1,14 @@
 provider "aws" {
-  region = "us-east-1"
+  region = "eu-north-1"
+  profile = "terraform-user"
 }
 
-resource "aws_security_group" "fastapi_sg" {
-  name        = "fastapi_sg"
-  description = "Allow HTTP and SSH traffic"
+resource "aws_security_group" "allow_http" {
+  name        = "allow_http"
+  description = "Allow HTTP traffic"
 
   ingress {
+    description = "HTTP from VPC"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -14,6 +16,7 @@ resource "aws_security_group" "fastapi_sg" {
   }
 
   ingress {
+    description = "SSH from anywhere"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -26,15 +29,27 @@ resource "aws_security_group" "fastapi_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
-
-resource "aws_instance" "fastapi_app" {
-  ami           = "ami-0d266d33ca564bca7"
-  instance_type = "t2.micro"
-  key_name      = "Key_Pair"
-  vpc_security_group_ids = [aws_security_group.fastapi_sg.id]
 
   tags = {
-    Name = "CD/CI Pipeline"
+    Name = "allow_web_traffic"
   }
+}
+
+resource "aws_instance" "web_server" {
+  ami           = "ami-000e50175c5f86214"
+  instance_type = "t2.micro"
+
+  security_groups = [aws_security_group.allow_http.name]
+  associate_public_ip_address = true
+
+  key_name = "putty-console"
+  
+  tags = {
+    Name = "FastAPI-App-Server"
+  }
+}
+
+output "public_ip" {
+  value = aws_instance.web_server.public_ip
+  description = "The public IP of the EC2 instance"
 }

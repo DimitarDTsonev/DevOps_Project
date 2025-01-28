@@ -1,16 +1,16 @@
 import socket
 from fastapi import FastAPI
-import uvicorn
 
 app = FastAPI()
 
 @app.get("/")
 def root():
-    return "Hello World"
+    return {"Hello World"}
 
 @app.get("/hostname")
-async def hostname():
-    return "Hostname: {socket.gethostname()}"
+async def get_hostname():
+    return {"hostname": socket.gethostname()}
 
 if __name__ == "__main__":
+    import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=80)
