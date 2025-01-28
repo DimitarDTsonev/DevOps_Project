@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "eu-central-1"
+  region = "us-east-1"
 }
 
 resource "aws_security_group" "fastapi_sg" {
@@ -33,16 +33,8 @@ resource "aws_instance" "fastapi_app" {
   instance_type = "t2.micro"
   key_name      = "Key_Pair"
   vpc_security_group_ids = [aws_security_group.fastapi_sg.id]
-  associate_public_ip_address = true
-  
+
   tags = {
     Name = "CD/CI Pipeline"
   }
-
-  subnet_id = "vpc-029ced3d52306d8d9"
-}
-
-output "public_ip" {
-  value = aws_instance.web_server.public_ip
-  description = "The public IP of the EC2 instance"
 }
