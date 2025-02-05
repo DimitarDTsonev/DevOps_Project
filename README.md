@@ -45,7 +45,7 @@ cd ./DevOps_Project
       docker run -d -p 80:80 flask-app
 
 Access the app:
-Local: http://localhost
+Local: http://10.108.6.138:80
 Deployed (AWS): Use the public IP of the EC2 instance.
 
 ### Step 3: CI/CD Pipeline
