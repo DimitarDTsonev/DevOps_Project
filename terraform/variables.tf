@@ -15,18 +15,24 @@ variable "instance_type" {
 
 variable "key_name" {
   type        = string
-  default     = "Key_Pair" 
+  default     = "Key_Pair"
   description = "Name of your existing AWS key pair"
 }
 
 variable "subnet_id" {
   type        = string
-  default     = ""
-  description = "Subnet ID if you have a custom subnet"
+  default     = "subnet-01bebe580dc2fba32" 
+  description = "Existing Subnet ID where the EC2 instance should be launched"
 }
 
 variable "vpc_id" {
   type        = string
-  default     = ""
-  description = "VPC ID if you have a custom VPC"
+  default     = "vpc-029ced3d52306d8d9"
+  description = "Existing VPC ID"
+}
+
+variable "security_group_id" {
+  type        = string
+  default     = "sg-076a8ba2eaa7d1401"
+  description = "Existing Security Group ID"
 }
