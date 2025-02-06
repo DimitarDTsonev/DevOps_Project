@@ -1,36 +1,36 @@
----
-- name: Deploy FastAPI App
-  hosts: all
-  become: yes
+- name: Deploy Docker container on EC2
+  hosts: web
+  become: true
   tasks:
-    - name: Install required system packages
+    - name: Update apt and install Docker (for Ubuntu-based AMI)
       apt:
-        pkg:
-          - apt-transport-https
-          - ca-certificates
-          - curl
-          - software-properties-common
-          - python3-pip
-        state: present
         update_cache: yes
-
-    - name: Install Docker
-      apt:
-        name: docker-ce
+        name: docker.io
         state: present
-        update_cache: yes
+      when: ansible_os_family == "Debian"
 
-    - name: Ensure Docker service is running
+    - name: Install Docker (for Amazon Linux 2)
+      yum:
+        name: docker
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Start Docker service
       service:
         name: docker
         state: started
-        enabled: yes
+        enabled: true
 
-    - name: Pull and run the FastAPI container
+    - name: Pull latest Docker image
+      docker_image:
+        name: ghcr.io/DimitarDTsonev/DevOps_Project
+        tag: "latest"
+
+    - name: Run the container
       docker_container:
-        name: fastapi-app
-        image: "ghcr.io/dimitardtsonev/devops_project:latest"
+        name: flask-app
+        image: ghcr.io/DimitarDTsonev/DevOps_Project:latest
         state: started
         restart_policy: always
-        ports:
+        published_ports:
           - "80:80"
